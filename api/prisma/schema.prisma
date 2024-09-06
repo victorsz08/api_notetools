@@ -1,0 +1,88 @@
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["omitApi", "relationJoins", "fullTextSearch"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+enum Role {
+  USER
+  MANAGER
+  ADMIN
+}
+
+enum Status {
+  PENDENTE
+  CANCELADO
+  CONECTADO
+}
+
+model User {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  name      String
+  lastname  String
+  role      Role     @default(USER)
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  team      Team?    @relation(fields: [team_id], references: [id])
+  team_id   String?
+
+  ownerTeam OwnerTeam[]
+  contracts Contract[]
+  notes     Notes[]
+}
+
+model OwnerTeam {
+  owner     User     @relation(fields: [owner_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  owner_id  String   @unique
+  team      Team     @relation(fields: [team_id], references: [id])
+  team_id   String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([owner_id, team_id])
+}
+
+model Team {
+  id        String      @id @default(uuid())
+  name      String
+  owner     OwnerTeam[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  users  User[]
+}
+
+model Notes {
+  id        String   @id @default(uuid())
+  text      String
+  user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Contract {
+  id               String   @id @default(uuid())
+  number           Int
+  local            String
+  phone            String
+  phoneSecondary   String?
+  installationDate DateTime
+  installationHour String
+  products         String[]
+  price            Float
+  status           Status   @default(PENDENTE)
+  user             User     @relation(fields: [userId], references: [id])
+  userId           String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+

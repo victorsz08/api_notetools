@@ -1,0 +1,172 @@
+import { Status } from "@prisma/client";
+import { Errors } from "../../Errors/custom-error";
+import { prisma } from "../../prisma/prisma";
+import { ContractProps, QueryContractsOptions } from "../../types";
+import { getUserById } from "../users";
+
+
+
+export async function createContracts(id: string,data: ContractProps){
+    const { 
+        number, 
+        local, 
+        phone, 
+        installationDate, 
+        installationHour, 
+        price, 
+        products, 
+        phoneSecondary } : ContractProps = data;
+
+    const user = await prisma.user.findUnique({
+        where: {
+            id: id
+        }
+    });
+
+    if(!user){
+        throw new Errors("user not-found", 404);
+    };
+
+    const contract = await prisma.contract.create({
+        data: {
+            number,
+            installationDate,
+            installationHour,
+            local,
+            phone,
+            price,
+            phoneSecondary,
+            products,
+            user: {
+                connect: {
+                    id: user.id
+                }
+            }
+        }
+    });
+
+    return contract;
+};
+
+
+export async function findContractsByUser(query: QueryContractsOptions){
+    const { dateIn, dateOut, local, status, userId }: QueryContractsOptions = query;
+
+    if(!userId){
+        throw new Errors("id user is required", 400);
+    }
+
+    const user = await getUserById(userId);
+
+    const contracts = await prisma.contract.findMany({
+        orderBy: {
+            installationDate: 'asc'
+        },
+        where: {
+            ...((dateIn && !dateOut) &&{
+                installationDate: {
+                    gte: new Date(dateIn)
+                }
+            }),
+            ...((!dateIn && dateOut) && {
+                installationDate: {
+                    lte: new Date(dateOut)
+                }
+            }),
+            ...((dateIn && dateOut) && {
+                installationDate: {
+                    gte: new Date(dateIn),
+                    lte: new Date(dateOut)
+                }
+            }),
+            ...(local && {
+                local: {
+                    contains: local
+                }
+            }),
+            ...(status && {
+                status: {
+                    equals: status as Status
+                }
+            }),
+            user: {
+                id: user.id
+            }
+        }
+    });
+
+    if(contracts.length === 0){
+        throw new Errors("no content", 204)
+    };
+
+    return contracts;
+};
+
+export async function findContractById(id: string){
+    const contract = await prisma.contract.findUnique({
+        where: {
+            id: id
+        },
+        include: {
+            user: {
+                omit: {
+                    password: true
+                }
+            }
+        }
+    });
+
+    if(!contract){
+        throw new Errors("not-found", 404);
+    };
+
+    return contract;
+};
+
+export async function updateContract(id: string, data: ContractProps){
+    const { 
+        number, 
+        local, 
+        phone, 
+        installationDate, 
+        installationHour, 
+        price, 
+        products, 
+        phoneSecondary,
+        status
+    } : ContractProps = data;
+
+    const contract = await findContractById(id);
+
+    await prisma.contract.update({
+        where: {
+            id: contract.id
+        },
+        data: {
+            number, 
+            local, 
+            phone, 
+            installationDate, 
+            installationHour, 
+            price, 
+            products, 
+            phoneSecondary,
+            status: status as Status
+        }
+    });
+
+
+    return contract;
+};
+
+export async function deleteContract(id: string){
+    const contract = await findContractById(id);
+
+    await prisma.contract.delete({
+        where: {
+            id: contract.id
+        }
+    });
+
+    return
+};
