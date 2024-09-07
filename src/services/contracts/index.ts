@@ -1,8 +1,8 @@
-import { Status } from "@prisma/client";
+import { Status } from "../../../node_modules/.prisma/client/index";
 import { Errors } from "../../Errors/custom-error";
 import { prisma } from "../../prisma/prisma";
-import { ContractProps, QueryContractsOptions } from "../../types";
-import { getUserById } from "../users";
+import { ContractProps } from "../../types/index";
+import { getUserById } from "../users/index";
 
 
 
@@ -49,8 +49,11 @@ export async function createContracts(id: string,data: ContractProps){
 };
 
 
-export async function findContractsByUser(query: QueryContractsOptions){
-    const { dateIn, dateOut, local, status, userId }: QueryContractsOptions = query;
+
+export async function findContractsByUser(query: any){
+    const { dateIn, dateOut, local, status, userId, page } = query;
+
+    const pageOptions: number = (parseInt(page) <= 1 ? 0 : (parseInt(page) * 10))
 
     if(!userId){
         throw new Errors("id user is required", 400);
@@ -62,6 +65,8 @@ export async function findContractsByUser(query: QueryContractsOptions){
         orderBy: {
             installationDate: 'asc'
         },
+        take: 10,
+        skip: pageOptions,
         where: {
             ...((dateIn && !dateOut) &&{
                 installationDate: {

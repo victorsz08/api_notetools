@@ -11,10 +11,10 @@ import {
 const router = Router();
 
 router
-    .post("contract/:id", createContractController)
-    .get("contracts", findContractsController)
-    .get("contracts/:id", findContractByIdController)
-    .put("contracts/:id", updateContractController)
-    .delete("contract/:id", deleteContractController)
+    .post("/contract/:id", createContractController)
+    .get("/contracts", findContractsController)
+    .get("/contracts/:id", findContractByIdController)
+    .put("/contracts/:id", updateContractController)
+    .delete("/contract/:id", deleteContractController)
 
 export default router;

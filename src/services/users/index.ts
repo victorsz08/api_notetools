@@ -1,8 +1,9 @@
-import { prisma } from "../../prisma/prisma";
-import { QueryUserOptions, UpdatePassword, UserProps } from "../../types";
+import { compare } from "bcryptjs";
+import { hash } from "bcryptjs";
+import { Role } from "../../../node_modules/.prisma/client/index";
 import { Errors } from "../../Errors/custom-error";
-import { compare, hash } from "bcryptjs";
-import { Role } from "@prisma/client";
+import { prisma } from "../../prisma/prisma";
+import { UserProps, UpdatePassword } from "../../types/index";
 
 
 
@@ -33,7 +34,7 @@ export async function createUser(data: UserProps) {
     return user;
 };
 
-export async function getUsers(query: QueryUserOptions) {
+export async function getUsers(query: any){
     const { search } = query;
 
     const users = await prisma.user.findMany({
@@ -51,7 +52,7 @@ export async function getUsers(query: QueryUserOptions) {
         }
     });
 
-    if(users.length){
+    if(users.length === 0){
         throw new Errors("no content", 204);
     };
 
@@ -130,4 +131,29 @@ export async function deleteUser(id: string){
     });
 
     return
-}
+};
+
+export async function resetPassword(userId: string){
+    if(!userId){
+        throw new Errors("user id is required", 400);
+    };
+
+    const password = Math.random().toString(30).slice(-10);
+
+    const passHashed = await hash(password, 10);
+
+    const user = await prisma.user.update({
+        where: {
+            id: userId
+        },
+        data: {
+            password: passHashed
+        }
+    });
+
+    if(!user){
+        throw new Errors("user not found", 404);
+    };
+
+    return password;
+};

@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
-import { ContractProps, QueryContractsOptions } from "../types"
-import { createContracts, deleteContract, findContractById, findContractsByUser, updateContract } from "../services/contracts";
 import { Errors } from "../Errors/custom-error";
+import { createContracts, findContractsByUser, findContractById, updateContract, deleteContract } from "../services/contracts/index";
+import { ContractProps } from "../types/index";
 
 
 
@@ -23,8 +23,7 @@ export async function createContractController(request: Request, response: Respo
 };
 
 export async function findContractsController(request: Request, response: Response){
-    const { status, local, userId, dateIn, dateOut } : QueryContractsOptions = request.query;
-    const query = { status, local, userId, dateIn, dateOut }
+    const query = request.query;
 
     try {
         const contracts = await findContractsByUser(query);

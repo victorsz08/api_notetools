@@ -1,7 +1,7 @@
 import { Response, Request } from "express";
-import { UpdatePassword, UserProps } from "../types";
-import { createUser, deleteUser, getUserById, getUsers, updatePassword, updateUser } from "../services/users";
+import { UpdatePassword, UserProps } from "../types/index";
 import { Errors } from "../Errors/custom-error";
+import { createUser, deleteUser, getUserById, getUsers, resetPassword, updatePassword, updateUser } from "../services/users/index";
 
 
 
@@ -63,7 +63,7 @@ export async function updateUserController(request: Request, response: Response)
         return response.status(200).send(user);
     } catch (error) {
         if(error instanceof Errors){
-            response.status(error.statusCode).send({ message: error.message });
+            return response.status(error.statusCode).send({ message: error.message });
         };
 
         return response.status(500).send({ message: `[ERROR_SERVER]: ${error}` });
@@ -81,7 +81,7 @@ export async function updatePasswordController(request: Request, response: Respo
         return response.status(200).send({ message: "updated password success" });
     } catch (error) {
         if(error instanceof Errors){
-            response.status(error.statusCode).send({ message: error.message });
+            return response.status(error.statusCode).send({ message: error.message });
         };
 
         return response.status(500).send({ message: `[ERROR_SERVER]: ${error}` });
@@ -98,7 +98,23 @@ export async function deleteUserController(request: Request, response: Response)
         return response.status(200).send({ message: "success" });
     } catch (error) {
         if(error instanceof Errors){
-            response.status(error.statusCode).send({ message: error.message });
+            return response.status(error.statusCode).send({ message: error.message });
+        };
+
+        return response.status(500).send({ message: `[ERROR_SERVER]: ${error}` });
+    }
+};
+
+export async function resetPasswordController(request: Request, response: Response){
+    const { userId } = request.params;
+    
+    try {
+        const password = await resetPassword(userId);
+
+        return response.status(200).send({ new_password: password });
+    } catch (error) {
+        if(error instanceof Errors){
+            return response.status(error.statusCode).send({ message: error.message });
         };
 
         return response.status(500).send({ message: `[ERROR_SERVER]: ${error}` });
