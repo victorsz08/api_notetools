@@ -6,6 +6,7 @@
     "node": "20"
   },
   "scripts": {
+    "postinstall": "prisma generate",
     "dev": "nodemon ./src/server.ts",
     "build": "prisma generate && rimraf ./dist && tsc",
     "start": "node ./dist/server.js"
