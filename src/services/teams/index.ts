@@ -84,8 +84,7 @@ export async function deleteTeam(id: string){
     return 
 };
 
-export async function addUserByTeam(data: any){
-    const { userId, teamId } : UserTeamProps = data;
+export async function addUserByTeam(userId: string, teamId: string){
     
     const user = await prisma.user.update({
         where: {
@@ -111,9 +110,7 @@ export async function addUserByTeam(data: any){
 };
 
 
-export async function createOwnerTeam(data: UserTeamProps){
-    const { userId, teamId } : UserTeamProps = data;
-
+export async function createOwnerTeam(userId: string, teamId: string){
     const user = await getUserById(userId);
     const team = await findTeamById(teamId);
 
@@ -184,5 +181,5 @@ export async function createUserByTeam(id: string, data: UserProps){
         }
     });
 
-    return team;
+    return;
 };

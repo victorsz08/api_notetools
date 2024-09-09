@@ -9,6 +9,7 @@ export async function authController(request: Request, response: Response){
     try {
         const user = await authLogin(username, password);
 
+        response.set('user_id', user.id);
         return response.status(200).send(user);
     } catch (error) {
         if(error instanceof Errors){
