@@ -1,6 +1,6 @@
 import { Status } from "../../../node_modules/.prisma/client/index";
 import { Errors } from "../../Errors/custom-error";
-import { prisma } from "../../prisma/prisma";
+import { prisma } from "../../../prisma/prisma";
 import { ContractProps } from "../../types/index";
 import { getUserById } from "../users/index";
 

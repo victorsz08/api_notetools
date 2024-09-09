@@ -1,5 +1,5 @@
 import { Errors } from "../../Errors/custom-error";
-import { prisma } from "../../prisma/prisma";
+import { prisma } from "../../../prisma/prisma";
 import { NoteProps, QueryNotesOptions } from "../../types/index";
 
 

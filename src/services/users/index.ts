@@ -2,7 +2,7 @@ import { compare } from "bcryptjs";
 import { hash } from "bcryptjs";
 import { Role } from "../../../node_modules/.prisma/client/index";
 import { Errors } from "../../Errors/custom-error";
-import { prisma } from "../../prisma/prisma";
+import { prisma } from "../../../prisma/prisma";
 import { UserProps, UpdatePassword } from "../../types/index";
 
 
