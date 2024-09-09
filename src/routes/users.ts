@@ -11,7 +11,6 @@ import {
 
 const router = Router();
 
-
 router
     .post("/users", createUserController)
     .get("/users", findUsersController)

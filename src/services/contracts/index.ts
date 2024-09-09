@@ -51,9 +51,7 @@ export async function createContracts(id: string,data: ContractProps){
 
 
 export async function findContractsByUser(query: any){
-    const { dateIn, dateOut, local, status, userId, page } = query;
-
-    const pageOptions: number = (parseInt(page) <= 1 ? 0 : (parseInt(page) * 10))
+    const { dateIn, dateOut, local, status, userId  } = query;
 
     if(!userId){
         throw new Errors("id user is required", 400);
@@ -65,8 +63,6 @@ export async function findContractsByUser(query: any){
         orderBy: {
             installationDate: 'asc'
         },
-        take: 10,
-        skip: pageOptions,
         where: {
             ...((dateIn && !dateOut) &&{
                 installationDate: {
