@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "nodemon ./src/server.ts",
-    "build": "rimraf ./dist && tsc",
+    "build": "prisma generate && rimraf ./dist && tsc",
     "start": "node ./dist/server.js"
   },
   "author": "Victor S Developer",
