@@ -10,7 +10,6 @@ import teams from "./teams";
 
 export default (app: Express) => {
     app.use(
-        "/v1",
         bodyParser.json(),
         auth,
         users,
