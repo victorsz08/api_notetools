@@ -66,18 +66,18 @@ export async function findContractsByUser(query: any){
         where: {
             ...((dateIn && !dateOut) &&{
                 installationDate: {
-                    gte: new Date(dateIn)
+                    gte: dateIn
                 }
             }),
             ...((!dateIn && dateOut) && {
                 installationDate: {
-                    lte: new Date(dateOut)
+                    lte: dateOut
                 }
             }),
             ...((dateIn && dateOut) && {
                 installationDate: {
-                    gte: new Date(dateIn),
-                    lte: new Date(dateOut)
+                    gte: dateIn,
+                    lte: dateOut
                 }
             }),
             ...(local && {
