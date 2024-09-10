@@ -42,8 +42,11 @@ export async function statisticsMonth(query: any){
     const statisticsMonth = {
         total: total,
         ticket: ticket.toFixed(2),
+        totalConnected: connectedPercent.length,
         connected: connected,
+        totalPendding: penddingPercent.length,
         pendding: pendding,
+        totalCanceled: canceledPercent.length,
         canceled: canceled
     };
 
@@ -89,8 +92,11 @@ export async function statisticsWeek(query: any){
     const statisticsWeek = {
         total: total,
         ticket: ticket.toFixed(2),
+        totalConnected: connectedPercent.length,
         connected: connected,
+        totalPendding: penddingPercent.length,
         pendding: pendding,
+        totalCanceled: canceledPercent.length,
         canceled: canceled
     };
 
