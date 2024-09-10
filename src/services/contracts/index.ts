@@ -3,6 +3,7 @@ import { Errors } from "../../Errors/custom-error";
 import { prisma } from "../../../prisma/prisma";
 import { ContractProps } from "../../types/index";
 import { getUserById } from "../users/index";
+import { endOfMonth, startOfMonth } from "date-fns";
 
 
 
@@ -47,8 +48,6 @@ export async function createContracts(id: string,data: ContractProps){
 
     return contract;
 };
-
-
 
 export async function findContractsByUser(query: any){
     const { dateIn, dateOut, local, status, userId  } = query;

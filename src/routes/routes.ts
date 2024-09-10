@@ -7,6 +7,7 @@ import contracts from "./contracts";
 import notes from "./notes";
 import auth from "./login";
 import teams from "./teams";
+import statistics from "./statistics";
 
 export default (app: Express) => {
     app.use(
@@ -15,6 +16,7 @@ export default (app: Express) => {
         users,
         contracts,
         notes,
-        teams
+        teams,
+        statistics
     )
 }
