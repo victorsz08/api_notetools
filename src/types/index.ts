@@ -49,6 +49,7 @@ export type UserProps = {
     lastname: string;
     username: string;
     role: string;
+    accessStatus: string;
     notes: NoteProps[];
     contracts: ContractProps[];
     password: string;

@@ -1,6 +1,6 @@
 import { hash } from "bcryptjs";
 import { Errors } from "../../Errors/custom-error";
-import { prisma } from "../../../prisma/prisma";
+import prisma  from "../../../prisma/prisma";
 import { TeamsProps, QueryTeamsOptions, UserTeamProps, UserProps } from "../../types/index";
 import { getUserById } from "../users/index";
 

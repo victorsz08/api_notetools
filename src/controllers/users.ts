@@ -1,7 +1,7 @@
 import { Response, Request } from "express";
 import { UpdatePassword, UserProps } from "../types/index";
 import { Errors } from "../Errors/custom-error";
-import { createUser, deleteUser, getUserById, getUsers, resetPassword, updatePassword, updateUser } from "../services/users/index";
+import { createUser, deleteUser, getUserById, getUsers, resetPassword, updateAccessUser, updatePassword, updateUser } from "../services/users/index";
 
 
 
@@ -104,6 +104,23 @@ export async function deleteUserController(request: Request, response: Response)
         return response.status(500).send({ message: `[ERROR_SERVER]: ${error}` });
     }
 };
+
+export async function updateAccessUserController(request: Request, response: Response){
+    const query = request.query;
+    const data = request.body;
+
+    try {
+        await updateAccessUser(query, data);
+
+        return response.status(200).send({ message: "access user"});
+    } catch (error) {
+        if(error instanceof Errors){
+            return response.status(error.statusCode).send({ message: error.message });
+        };
+
+        return response.status(500).send({ message: `[ERROR_SERVER]: ${error}` });
+    }
+}
 
 export async function resetPasswordController(request: Request, response: Response){
     const { userId } = request.params;

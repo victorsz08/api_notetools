@@ -2,8 +2,9 @@ import { compare } from "bcryptjs";
 import { hash } from "bcryptjs";
 import { Role } from "../../../node_modules/.prisma/client/index";
 import { Errors } from "../../Errors/custom-error";
-import { prisma } from "../../../prisma/prisma";
 import { UserProps, UpdatePassword } from "../../types/index";
+import prisma from "../../../prisma/prisma";
+import { AccessStatus } from "@prisma/client";
 
 
 
@@ -33,6 +34,25 @@ export async function createUser(data: UserProps) {
 
     return user;
 };
+
+export async function updateAccessUser(query: any, data: UserProps){
+    const { userId } = query;
+
+    const userAccess = await prisma.user.update({
+        where: {
+            id: userId
+        },
+        data: {
+            accessStatus: data.accessStatus as AccessStatus
+        }
+    });
+
+    if(!userAccess){
+        throw new Errors("user not-found", 404);
+    };
+
+    return userAccess;
+}
 
 export async function getUsers(query: any){
     const { search } = query;

@@ -1,5 +1,5 @@
 import { endOfMonth, endOfWeek, startOfMonth, startOfWeek } from "date-fns";
-import { prisma } from "../../../prisma/prisma";
+import  prisma  from "../../../prisma/prisma";
 
 
 

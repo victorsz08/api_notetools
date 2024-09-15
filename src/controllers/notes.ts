@@ -1,6 +1,6 @@
 import { Response, Request } from "express";
 import { Errors } from "../Errors/custom-error";
-import { createNotes, findNotes } from "../services/notes/index";
+import { createOrUpdateNotes, findNotes } from "../services/notes/index";
 import { QueryNotesOptions, NoteProps } from "../types/index";
 
 
@@ -10,9 +10,9 @@ export async function createNotesController(request: Request, response: Response
     const data: NoteProps = request.body;
 
     try {
-        const notes = await createNotes(query, data);
+        const notes = await createOrUpdateNotes(query, data);
 
-        return response.status(201).send(notes);
+        return response.status(200).send(notes);
     } catch (error) {
         if(error instanceof Errors){
             return response.status(error.statusCode).send(error.message);
