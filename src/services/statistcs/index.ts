@@ -40,7 +40,7 @@ export async function statisticsMonth(query: any){
     };
 
 
-    const statisticsWeek: StatisticsProps[] = [
+    const statisticsMonth: StatisticsProps[] = [
         {
             name: "FATURAMENTO",
             total: total.toString(),
