@@ -38,7 +38,12 @@ export type StatisticsProps = {
     name: string;
     total: string;
     percent: number;
-} 
+}
+
+export type SalesProps = {
+    total: number;
+    compareSales: number;
+}
 
 export type NoteProps = {
     id: string;

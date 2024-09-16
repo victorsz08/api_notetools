@@ -1,6 +1,6 @@
-import { addDays, endOfMonth, endOfWeek, startOfMonth, startOfWeek, subDays } from "date-fns";
+import { addDays, endOfMonth, endOfWeek, startOfMonth, startOfWeek, subDays, subWeeks } from "date-fns";
 import  prisma  from "../../../prisma/prisma";
-import { StatisticsProps } from "../../types";
+import { SalesProps, StatisticsProps } from "../../types";
 
 
 
@@ -128,21 +128,53 @@ export async function statisticsWeek(query: any){
 export async function salesWeek(query: any){
     const { userId } = query;
     const currentDate = new Date();
-    const startOfCurrentWeek = startOfWeek(currentDate, { weekStartsOn: 0 });
-    const startOfCustomWeek = subDays(startOfCurrentWeek, 1);
-    const endOfCustomWeek = addDays(startOfCustomWeek, 6);
-
-    const sales = await prisma.contract.findMany({
+    
+    // Semana Atual
+    const startOfCurrentWeek = subDays(startOfWeek(currentDate, { weekStartsOn: 0 }), 1); // Sábado anterior ao domingo atual
+    const endOfCurrentWeek = addDays(startOfCurrentWeek, 6); // Sexta-feira
+    
+    // Semana Passada
+    const startOfPreviousWeek = subWeeks(startOfCurrentWeek, 1); // Sábado da semana anterior
+    const endOfPreviousWeek = addDays(startOfPreviousWeek, 6); // Sexta-feira da semana anterior
+    
+    // Contratos da semana atual
+    const currentWeekContracts = await prisma.contract.findMany({
         where: {
             user: {
                 id: userId
             },
             createdAt: {
-                gte: startOfCustomWeek,
-                lte: endOfCustomWeek
+                gte: startOfCurrentWeek,
+                lte: endOfCurrentWeek
+            }
+        }
+    });
+    
+    // Contratos da semana passada
+    const previousWeekContracts = await prisma.contract.findMany({
+        where: {
+            user: {
+                id: userId
+            },
+            createdAt: {
+                gte: startOfPreviousWeek,
+                lte: endOfPreviousWeek
             }
         }
     });
 
-    return sales;
+    const previousWeekCount = previousWeekContracts.length;
+    const currentWeekCount = currentWeekContracts.length;
+
+// Verifica se o valor da semana passada é zero para evitar divisão por zero
+    const comparative = previousWeekCount === 0 
+        ? (currentWeekCount > 0 ? 100 : 0) // Se semana passada for 0 e a atual tiver vendas, 100% de crescimento
+        : ((currentWeekCount - previousWeekCount) / previousWeekCount) * 100; // Fórmula de crescimento/queda
+
+    const sales: SalesProps = {
+        total: currentWeekCount,
+        compareSales: parseFloat(comparative.toFixed(2)) // Limita a duas casas decimais
+    };
+
+    return sales;       
 } 
