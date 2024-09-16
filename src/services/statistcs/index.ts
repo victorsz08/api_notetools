@@ -1,4 +1,4 @@
-import { endOfMonth, endOfWeek, startOfMonth, startOfWeek } from "date-fns";
+import { addDays, endOfMonth, endOfWeek, startOfMonth, startOfWeek, subDays } from "date-fns";
 import  prisma  from "../../../prisma/prisma";
 import { StatisticsProps } from "../../types";
 
@@ -69,15 +69,16 @@ export async function statisticsMonth(query: any){
 
 export async function statisticsWeek(query: any){
     const { userId } = query;
-    const date = new Date();
-    const dateIn = startOfWeek(date);
-    const dateOut = endOfWeek(date);
+    const currentDate = new Date();
+    const startOfCurrentWeek = startOfWeek(currentDate, { weekStartsOn: 0 });
+    const startOfCustomWeek = subDays(startOfCurrentWeek, 1);
+    const endOfCustomWeek = addDays(startOfCustomWeek, 6);
 
     const contracts = await prisma.contract.findMany({
         where: {
             AND: [
-                { installationDate: { gte: dateIn }},
-                { installationDate: { lte: dateOut }}
+                { installationDate: { gte: startOfCustomWeek }},
+                { installationDate: { lte: endOfCustomWeek }}
             ],
             user: {
                 id: userId
@@ -121,4 +122,27 @@ export async function statisticsWeek(query: any){
     ]
 
     return statisticsWeek;
-}
+};
+
+
+export async function salesWeek(query: any){
+    const { userId } = query;
+    const currentDate = new Date();
+    const startOfCurrentWeek = startOfWeek(currentDate, { weekStartsOn: 0 });
+    const startOfCustomWeek = subDays(startOfCurrentWeek, 1);
+    const endOfCustomWeek = addDays(startOfCustomWeek, 6);
+
+    const sales = await prisma.contract.findMany({
+        where: {
+            user: {
+                id: userId
+            },
+            AND: [
+                { createdAt: { gte: startOfCustomWeek } },
+                { createdAt: { lte: endOfCustomWeek } }
+            ]
+        }
+    });
+
+    return sales;
+} 
