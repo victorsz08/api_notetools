@@ -104,11 +104,6 @@ export async function statisticsWeek(query: any){
 
     const statisticsWeek: StatisticsProps[] = [
         {
-            name: "FATURAMENTO",
-            total: total.toString(),
-            percent: ticket
-        },
-        {
             name: "CONECTADO",
             total: `${connectedPercent.length}`,
             percent: parseFloat(connected)
