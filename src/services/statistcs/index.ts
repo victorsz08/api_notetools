@@ -40,26 +40,26 @@ export async function statisticsMonth(query: any){
     };
 
 
-    const statisticsMonth: StatisticsProps[] = [
-        {
-            name: "CONECTADO",
-            total: connected,
-            percent: `${connectedPercent}%`
-        },
-        {
-            name: "PENDENTE",
-            total: pendding,
-            percent: `${penddingPercent}%`
-        },
-        {
-            name: "CANCELADO",
-            total: canceled,
-            percent: `${canceledPercent}%`
-        },
+    const statisticsWeek: StatisticsProps[] = [
         {
             name: "FATURAMENTO",
             total: total.toString(),
             percent: `R$${ticket}`
+        },
+        {
+            name: "CONECTADO",
+            total: `${connectedPercent.length}`,
+            percent: `${connected}%`
+        },
+        {
+            name: "PENDENTE",
+            total: `${penddingPercent.length}`,
+            percent: `${pendding}%`
+        },
+        {
+            name: "CANCELADO",
+            total: `${canceledPercent.length}`,
+            percent: `${canceled}%`
         },
     ]
 
@@ -104,24 +104,24 @@ export async function statisticsWeek(query: any){
 
     const statisticsWeek: StatisticsProps[] = [
         {
-            name: "CONECTADO",
-            total: connected,
-            percent: `${connectedPercent}%`
-        },
-        {
-            name: "PENDENTE",
-            total: pendding,
-            percent: `${penddingPercent}%`
-        },
-        {
-            name: "CANCELADO",
-            total: canceled,
-            percent: `${canceledPercent}%`
-        },
-        {
             name: "FATURAMENTO",
             total: total.toString(),
             percent: `R$${ticket}`
+        },
+        {
+            name: "CONECTADO",
+            total: `${connectedPercent.length}`,
+            percent: `${connected}%`
+        },
+        {
+            name: "PENDENTE",
+            total: `${penddingPercent.length}`,
+            percent: `${pendding}%`
+        },
+        {
+            name: "CANCELADO",
+            total: `${canceledPercent.length}`,
+            percent: `${canceled}%`
         },
     ]
 
