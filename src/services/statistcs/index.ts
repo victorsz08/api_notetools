@@ -137,10 +137,10 @@ export async function salesWeek(query: any){
             user: {
                 id: userId
             },
-            AND: [
-                { createdAt: { gte: startOfCustomWeek } },
-                { createdAt: { lte: endOfCustomWeek } }
-            ]
+            createdAt: {
+                gte: startOfCustomWeek,
+                lte: endOfCustomWeek
+            }
         }
     });
 

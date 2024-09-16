@@ -6,7 +6,7 @@ const router = Router();
 router
     .get("/contracts/statistics/month", statisticsMonthController)
     .get("/contracts/statistics/week", statistcsWeekController)
-    .get("/contracts/sales", salesWeekController)
+    .get("/contracts/sales/week", salesWeekController)
 
 
 export default router;
