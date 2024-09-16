@@ -1,5 +1,6 @@
 import { endOfMonth, endOfWeek, startOfMonth, startOfWeek } from "date-fns";
 import  prisma  from "../../../prisma/prisma";
+import { StatisticsProps } from "../../types";
 
 
 
@@ -39,16 +40,28 @@ export async function statisticsMonth(query: any){
     };
 
 
-    const statisticsMonth = {
-        total: total,
-        ticket: ticket.toFixed(2),
-        totalConnected: connectedPercent.length,
-        connected: connected,
-        totalPendding: penddingPercent.length,
-        pendding: pendding,
-        totalCanceled: canceledPercent.length,
-        canceled: canceled
-    };
+    const statisticsMonth: StatisticsProps[] = [
+        {
+            name: "CONECTADO",
+            total: connected,
+            percent: `${connectedPercent}%`
+        },
+        {
+            name: "PENDENTE",
+            total: pendding,
+            percent: `${penddingPercent}%`
+        },
+        {
+            name: "CANCELADO",
+            total: canceled,
+            percent: `${canceledPercent}%`
+        },
+        {
+            name: "FATURAMENTO",
+            total: total.toString(),
+            percent: `R$${ticket}`
+        },
+    ]
 
     return statisticsMonth;
 };
@@ -89,16 +102,28 @@ export async function statisticsWeek(query: any){
         ticket = connectedPercent[i].price + ticket
     };
 
-    const statisticsWeek = {
-        total: total,
-        ticket: ticket.toFixed(2),
-        totalConnected: connectedPercent.length,
-        connected: connected,
-        totalPendding: penddingPercent.length,
-        pendding: pendding,
-        totalCanceled: canceledPercent.length,
-        canceled: canceled
-    };
+    const statisticsWeek: StatisticsProps[] = [
+        {
+            name: "CONECTADO",
+            total: connected,
+            percent: `${connectedPercent}%`
+        },
+        {
+            name: "PENDENTE",
+            total: pendding,
+            percent: `${penddingPercent}%`
+        },
+        {
+            name: "CANCELADO",
+            total: canceled,
+            percent: `${canceledPercent}%`
+        },
+        {
+            name: "FATURAMENTO",
+            total: total.toString(),
+            percent: `R$${ticket}`
+        },
+    ]
 
     return statisticsWeek;
 }

@@ -34,6 +34,12 @@ export type UpdatePassword = {
     newPassword: string;
 }
 
+export type StatisticsProps = {
+    name: string;
+    total: string;
+    percent: string;
+} 
+
 export type NoteProps = {
     id: string;
     text: string;
