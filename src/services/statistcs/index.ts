@@ -144,7 +144,5 @@ export async function salesWeek(query: any){
         }
     });
 
-    const response = sales.length;
-
-    return response;
+    return sales;
 } 
