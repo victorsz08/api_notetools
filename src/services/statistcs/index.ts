@@ -44,22 +44,22 @@ export async function statisticsMonth(query: any){
         {
             name: "FATURAMENTO",
             total: total.toString(),
-            percent: `R$${ticket}`
+            percent: ticket
         },
         {
             name: "CONECTADO",
             total: `${connectedPercent.length}`,
-            percent: `${connected}%`
+            percent: parseFloat(connected)
         },
         {
             name: "PENDENTE",
             total: `${penddingPercent.length}`,
-            percent: `${pendding}%`
+            percent: parseFloat(pendding)
         },
         {
             name: "CANCELADO",
             total: `${canceledPercent.length}`,
-            percent: `${canceled}%`
+            percent: parseFloat(canceled)
         },
     ]
 
@@ -106,22 +106,22 @@ export async function statisticsWeek(query: any){
         {
             name: "FATURAMENTO",
             total: total.toString(),
-            percent: `R$${ticket}`
+            percent: ticket
         },
         {
             name: "CONECTADO",
             total: `${connectedPercent.length}`,
-            percent: `${connected}%`
+            percent: parseFloat(connected)
         },
         {
             name: "PENDENTE",
             total: `${penddingPercent.length}`,
-            percent: `${pendding}%`
+            percent: parseFloat(pendding)
         },
         {
             name: "CANCELADO",
             total: `${canceledPercent.length}`,
-            percent: `${canceled}%`
+            percent: parseFloat(canceled)
         },
     ]
 
