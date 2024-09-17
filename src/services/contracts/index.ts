@@ -59,9 +59,11 @@ export async function findContractsByUser(query: any){
     const user = await getUserById(userId);
 
     const contracts = await prisma.contract.findMany({
-        orderBy: {
-            installationDate: 'asc'
-        },
+        orderBy: [
+            {
+                installationDate: "asc"
+            }
+        ],
         where: {
             installationDate: {
                 gte: dateIn,
@@ -86,6 +88,12 @@ export async function findContractsByUser(query: any){
     if(contracts.length === 0){
         throw new Errors("no content", 204)
     };
+
+    const statusOrder = ['PENDENTE', 'CONECTADO', 'CANCELADO']; // Ordem personalizada
+    
+    contracts.sort((a, b) => {
+            return statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status);
+    });
 
     return contracts;
 };
