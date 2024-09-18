@@ -61,7 +61,7 @@ export async function findContractsByUser(query: any){
     const contracts = await prisma.contract.findMany({
         orderBy: [
             {
-                installationDate: "asc"
+                installationDate: "desc"
             }
         ],
         where: {
