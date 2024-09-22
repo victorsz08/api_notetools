@@ -1,4 +1,4 @@
-import { addDays, endOfMonth, endOfWeek, startOfMonth, startOfWeek, subDays, subWeeks } from "date-fns";
+import { addDays, endOfDay, endOfMonth, endOfWeek, startOfMonth, startOfWeek, subDays, subWeeks } from "date-fns";
 import  prisma  from "../../../prisma/prisma";
 import { SalesProps, StatisticsProps } from "../../types";
 
@@ -69,7 +69,7 @@ export async function statisticsMonth(query: any){
 
 export async function statisticsWeek(query: any){
     const { userId } = query;
-    const currentDate = new Date();
+    const currentDate = endOfDay(new Date());
     const startOfCurrentWeek = startOfWeek(currentDate, { weekStartsOn: 0 });
     const startOfCustomWeek = subDays(startOfCurrentWeek, 1);
     const endOfCustomWeek = addDays(startOfCustomWeek, 6);
@@ -127,15 +127,15 @@ export async function statisticsWeek(query: any){
 
 export async function salesWeek(query: any){
     const { userId } = query;
-    const currentDate = new Date();
+    const currentDate = endOfDay(new Date());
     
     // Semana Atual
     const startOfCurrentWeek = subDays(startOfWeek(currentDate, { weekStartsOn: 0 }), 1); // Sábado anterior ao domingo atual
-    const endOfCurrentWeek = addDays(startOfCurrentWeek, 6); // Sexta-feira
+    const endOfCurrentWeek = addDays(startOfCurrentWeek, 7); // Sexta-feira
     
     // Semana Passada
     const startOfPreviousWeek = subWeeks(startOfCurrentWeek, 1); // Sábado da semana anterior
-    const endOfPreviousWeek = addDays(startOfPreviousWeek, 6); // Sexta-feira da semana anterior
+    const endOfPreviousWeek = addDays(startOfPreviousWeek, 7); // Sexta-feira da semana anterior
     
     // Contratos da semana atual
     const currentWeekContracts = await prisma.contract.findMany({

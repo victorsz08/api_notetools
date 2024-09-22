@@ -13,7 +13,9 @@ app.get("/", (request: Request, response: Response) => {
     return response.status(200).send("Notetools API");
 });
 
-app.use(cors())
+app.use(cors({
+    origin: process.env.CORS_ALLOW_PROD || "https://localhost:3000"
+}))
 
 routes(app);
 
