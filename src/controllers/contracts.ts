@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { Errors } from "../Errors/custom-error";
-import { createContracts, findContractsByUser, findContractById, updateContract, deleteContract } from "../services/contracts/index";
+import { createContracts, findContractsByUser, findContractById, updateContract, deleteContract, findAllContracts } from "../services/contracts/index";
 import { ContractProps } from "../types/index";
 
 
@@ -21,6 +21,22 @@ export async function createContractController(request: Request, response: Respo
         return response.status(500).send({ message: `[ERROR_SERVER]: ${error}`});
     };
 };
+
+export async function findAllContractsController(request: Request, response: Response){
+    const query = request.query;
+
+    try {
+        const contracts = await findAllContracts(query);
+        
+        return response.status(200).send(contracts);
+    } catch (error) {
+        if(error instanceof Errors){
+            return response.status(error.statusCode).send(error.message);
+        };
+
+        return response.status(500).send({ message: `[ERROR_SERVER]: ${error}`});
+    }
+}
 
 export async function findContractsController(request: Request, response: Response){
     const query = request.query;

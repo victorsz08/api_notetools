@@ -49,6 +49,28 @@ export async function createContracts(id: string,data: ContractProps){
     return contract;
 };
 
+export async function findAllContracts(query: any){
+    const { dateIn, dateOut } = query;
+
+    const contracts = await prisma.contract.findMany({
+        where: {
+            installationDate: {
+                gte: dateIn,
+                lte: dateOut
+            }
+        },
+        include: {
+            user: {
+                omit: {
+                    password: true
+                }
+            }
+        }
+    });
+
+    return contracts;
+}
+
 export async function findContractsByUser(query: any){
     const { dateIn, dateOut, local, status, userId  } = query;
 
