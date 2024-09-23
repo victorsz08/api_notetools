@@ -14,7 +14,7 @@ app.get("/", (request: Request, response: Response) => {
 });
 
 app.use(cors({
-    origin: process.env.CORS_ALLOW_PROD || "https://localhost:3000"
+    origin: ["https://notetools.online", "https://www.notetools.online"]
 }))
 
 routes(app);
