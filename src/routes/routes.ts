@@ -9,6 +9,7 @@ import auth from "./login";
 import teams from "./teams";
 import statistics from "./statistics";
 import countries from "./countries";
+import ranking from "./ranking";
 
 export default (app: Express) => {
     app.use(
@@ -19,6 +20,7 @@ export default (app: Express) => {
         notes,
         teams,
         statistics,
-        countries
+        countries,
+        ranking
     )
 }

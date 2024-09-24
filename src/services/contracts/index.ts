@@ -50,14 +50,15 @@ export async function createContracts(id: string,data: ContractProps){
 };
 
 export async function findAllContracts(query: any){
-    const { dateIn, dateOut } = query;
+    const { dateIn, dateOut , status } = query;
 
     const contracts = await prisma.contract.findMany({
         where: {
             installationDate: {
                 gte: dateIn,
                 lte: dateOut
-            }
+            },
+            status: status as Status
         },
         include: {
             user: {
@@ -67,6 +68,10 @@ export async function findAllContracts(query: any){
             }
         }
     });
+
+    if(contracts.length === 0){
+        throw new Errors("contracts not found", 404);
+    }
 
     return contracts;
 }

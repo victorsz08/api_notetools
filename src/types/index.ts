@@ -16,6 +16,15 @@ export type QueryContractsOptions = {
     page: string | number;
 };
 
+export type RankingProps = {
+    id: string;
+    name: string;
+    lastname: string;
+    contracts: number;
+    billing: number;
+    percent: number;
+}
+
 export type UserTeamProps = {
     userId: string;
     teamId: string;
