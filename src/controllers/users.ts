@@ -123,10 +123,10 @@ export async function updateAccessUserController(request: Request, response: Res
 }
 
 export async function resetPasswordController(request: Request, response: Response){
-    const { userId } = request.params;
+    const { id } = request.params;
     
     try {
-        const password = await resetPassword(userId);
+        const password = await resetPassword(id);
 
         return response.status(200).send({ new_password: password });
     } catch (error) {
