@@ -9,7 +9,7 @@ import { AccessStatus } from "@prisma/client";
 
 
 export async function createUser(data: UserProps) {
-    const { name, lastname, username, password}: UserProps = data;
+    const { name, lastname, username, password }: UserProps = data;
 
     const usernameExists = await prisma.user.findUnique({
         where: {
@@ -27,7 +27,7 @@ export async function createUser(data: UserProps) {
         data: {
             name: name,
             lastname: lastname,
-            username: lastname,
+            username: username,
             password: passHashed
         }
     });
