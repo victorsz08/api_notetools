@@ -3,7 +3,7 @@ import { Errors } from "../../Errors/custom-error";
 import prisma  from "../../../prisma/prisma";
 import { ContractProps } from "../../types/index";
 import { getUserById } from "../users/index";
-import { endOfMonth, startOfMonth } from "date-fns";
+import { TypeContract } from "@prisma/client";
 
 
 
@@ -15,6 +15,7 @@ export async function createContracts(id: string,data: ContractProps){
         installationDate, 
         installationHour, 
         price, 
+        type,
         products, 
         phoneSecondary } : ContractProps = data;
 
@@ -36,6 +37,7 @@ export async function createContracts(id: string,data: ContractProps){
             local,
             phone,
             price,
+            type: type as TypeContract,
             phoneSecondary,
             products,
             user: {
@@ -77,7 +79,7 @@ export async function findAllContracts(query: any){
 }
 
 export async function findContractsByUser(query: any){
-    const { dateIn, dateOut, local, status, userId  } = query;
+    const { dateIn, dateOut, local, status, userId, type  } = query;
 
     if(!userId){
         throw new Errors("id user is required", 400);
@@ -104,6 +106,11 @@ export async function findContractsByUser(query: any){
             ...(status && {
                 status: {
                     equals: status as Status
+                }
+            }),
+            ...(type && {
+                type: {
+                    equals: type as TypeContract
                 }
             }),
             user: {
@@ -156,7 +163,8 @@ export async function updateContract(id: string, data: ContractProps){
         price, 
         products, 
         phoneSecondary,
-        status
+        status,
+        type
     } : ContractProps = data;
 
     const contract = await findContractById(id);
@@ -174,7 +182,8 @@ export async function updateContract(id: string, data: ContractProps){
             price, 
             products, 
             phoneSecondary,
-            status: status as Status
+            status: status as Status,
+            type: type as TypeContract
         }
     });
 

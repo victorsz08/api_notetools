@@ -71,6 +71,7 @@ export type UserProps = {
     role: string;
     accessStatus: string;
     notes: NoteProps[];
+    goals: GoalsProps[]
     contracts: ContractProps[];
     password: string;
     createdAt: Date;
@@ -90,6 +91,7 @@ export type ContractProps = {
     status: string;
     user: UserProps;
     userId: string;
+    type: string;
     createdAt: Date;
     updatedAt: Date;
 };
@@ -108,5 +110,14 @@ export type OwnerTeamProps = {
     user_id: string;
     team: TeamsProps;
     team_id: string;
+}
+
+export type GoalsProps = {
+    id: string;
+    goal: number;
+    user: UserProps
+    user_id: string;
+    createdAt: Date;
+    updatedAt: Date; 
 }
 

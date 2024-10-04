@@ -21,8 +21,18 @@ model User {
   accessStatus AccessStatus? @default(ACTIVE)
   contracts    Contract[]
   notes        Notes[]
+  goals        Goals[]
   ownerTeam    OwnerTeam?
   team         Team?         @relation(fields: [team_id], references: [id])
+}
+
+model Goals {
+  id        String   @id @default(uuid())
+  goal      Float
+  user      User     @relation(fields: [user_id], references: [id])
+  user_id   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model OwnerTeam {
@@ -55,7 +65,7 @@ model Notes {
 }
 
 model Contract {
-  id               String   @id @default(uuid())
+  id               String       @id @default(uuid())
   number           Int
   local            String
   phone            String
@@ -64,11 +74,12 @@ model Contract {
   installationHour String
   products         String[]
   price            Float
-  status           Status   @default(PENDENTE)
+  type             TypeContract?
+  status           Status       @default(PENDENTE)
   userId           String
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  user             User     @relation(fields: [userId], references: [id])
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  user             User         @relation(fields: [userId], references: [id])
 }
 
 model Countries {
@@ -94,4 +105,9 @@ enum Status {
   PENDENTE
   CANCELADO
   CONECTADO
+}
+
+enum TypeContract {
+  BASE
+  PROSPECT
 }
